@@ -1,2 +1,2 @@
 # Web-Programming-Project
-All the obligatory tasks are done.
+Project for the subject Web Programming. The project represents a book exchange platform.
