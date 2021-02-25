@@ -1,0 +1,63 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    .image {
+        height: 70%;
+        width: 50%;
+        display: inline-block;
+        vertical-align: text-bottom;
+        margin-left: 3%;
+    }
+
+    table {
+        background-color: #F2F2F2;
+        display: inline-block;
+        vertical-align: top;
+        margin-top:2%;
+    }
+    td {
+        padding: 4%;
+    }
+
+    .btn-success {
+        color: white !important;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<img class="image" src="../static/images/booking.png" th:src="@{/images/booking.png}"/>
+<table class="table-hover table-sm">
+    <thead>
+    <tr>
+        <th scope="col">Име на книгата</th>
+        <th scope="col">Година на објавување</th>
+        <th scope="col">Заинтересиран купувач</th>
+        <th scope="col">Акции</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.getBookName()}"></td>
+        <td th:text="${book.getYearPublished()}"></td>
+        <td th:if="${book.getUserBuyer()!=null}" th:text="${book.getUserBuyer().getUsername()}"></td>
+        <td th:if="${book.getUserBuyer()==null}">Нема</td>
+
+        <td class="text-right">
+                <form th:action="@{'/myBooks/{id}/delete' (id=${book.getId()})}" th:method="DELETE">
+                    <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash delete-product">Delete</i></button>
+                </form>
+
+            <a th:href="@{'/myBooks/{id}/edit' (id=${book.id})}" class="btn btn-sm btn-success edit-product"><i class="fa fa-trash">Edit</i></a>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

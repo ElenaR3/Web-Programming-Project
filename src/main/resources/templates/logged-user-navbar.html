@@ -1,0 +1,54 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<style>
+    .navbar {
+        font-weight: bold;
+        font-size: 120%;
+        padding:0;
+        background-color: white !important;
+    }
+    .navbar-light .navbar-nav .active>.nav-link .navbar-light .navbar-nav .nav-link.active .navbar-light,
+    .navbar-nav .nav-link.show .navbar-light .navbar-nav .show>.nav-link
+    {
+        color: white;
+        background-color: white;
+    }
+
+    img {
+       width: inherit;
+        height: 100px;
+    }
+
+    .card0 {
+        margin-top: 0;
+    }
+
+    .container-fluid {
+        padding-top: .25rem !important;
+
+    }
+
+    .navbar-brand {
+    margin-right: 0;
+    }
+
+</style>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #d0ead0;">
+    <a class="navbar-brand" href="#">
+        <img class="nav-item" src="../static/images/logo.png" th:src="@{/images/logo.png}"/>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/myBooks/booksFair">Купи книга<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="/myBooks/sellBooks">Продај книга</a>
+            <a class="nav-item nav-link" href="/myBooks/myBooksForSale">Мои книги</a>
+            <a class="nav-item nav-link" href="/myBooks/personalReserved">Резервирани за купување</a>
+            <a class="nav-item nav-link" href="#">Помош и безбедност</a>
+            <a class="nav-item nav-link" href="/logout">Одјави се</a>
+        </div>
+    </div>
+</nav>
+</html>

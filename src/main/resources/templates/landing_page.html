@@ -1,0 +1,88 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<style type="text/css">
+    .img {
+        width: 1000px;
+        margin-left: 50px
+    }
+    .general {
+        width: 1000px;
+        height: 900px;
+        position: fixed;
+        float: right;
+        display: inline-block;
+    }
+    .student {
+        display: inline-block;
+        float: right;
+        font-size: 500%;
+        color: #6C945E;
+        font-weight: bold;
+        margin-top: 5%;
+        margin-right: 10%;
+        margin-left: 8%;
+        word-break: break-all;
+        width: 480px;
+        height: 800px;
+        overflow-y: hidden;
+        position: fixed;
+        text-shadow: 2px 2px lightgray;
+    }
+
+    .subtitle {
+        font-size: 30%;
+        color: gray;
+        font-weight: bold;
+        word-break: break-word;
+        overflow-y: hidden;
+        position: fixed;
+        margin-top:25px;
+        width: inherit;
+    }
+
+    .button-style {
+        margin-top: 30%;
+        margin-left: 10%;
+        width: 30%;
+        font-weight: bold;
+    }
+
+    .second-button {
+        margin-top: 30%;
+        margin-left: 10%;
+        width: 30%;
+    }
+    .no-shadow {
+        text-shadow: none;
+    }
+
+    .btn-success {
+        background-color: #fb6f4c;
+        border-color:  #fb6f4c;
+    }
+    .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active{
+        background-color: #fb6f4c;
+        border-color:  #fb6f4c;
+    }
+</style>
+
+<img class="img" src="../static/static/landing_page1.png" th:src="@{/images/landing_page1.png}"/>
+
+<div class="general">
+    <div class="student">Од студент за студент.
+        <div class="subtitle no-shadow">Набавувањето на студентски книги никогаш не било полесно.
+        </div>
+        <a th:href="@{/books/sign-up}" class="btn btn-success button-style no-shadow">Најави се</a>
+        <button type="button" class="btn btn-outline-secondary second-button">Како работи</button>
+    </div>
+</div>
+</body>
+</html>
+
