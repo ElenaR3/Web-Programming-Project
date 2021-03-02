@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -22,12 +23,6 @@ public class BookService implements BookServiceInterface {
     private final BookRepository bookRepository;
     public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-    }
-
-    @Override
-    public List<Book> searchByNameOrAuthor(String name, String author) {
-        // return this.bookRepository.findAllByBookNameLikeOrAuthorsLike(name, )
-        return null;
     }
 
     @Override
@@ -92,5 +87,9 @@ public class BookService implements BookServiceInterface {
         Page<Book> bookPage = new PageImpl<Book>(list, PageRequest.of(currentPage, pageSize), books.size());
 
         return bookPage;
+    }
+
+    public List<Book> findAllByAuthorOrName(String s) {
+        return this.bookRepository.findAllByBookNameLike(s);
     }
 }

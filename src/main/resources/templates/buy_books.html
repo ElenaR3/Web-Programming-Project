@@ -16,7 +16,7 @@
     <style>
         body {
             color: #566787;
-            background: #D0EAD0;
+            background: -webkit-linear-gradient(left, #D0EAD0, #6C945E);
             font-family: 'Roboto', sans-serif;
         }
 
@@ -138,12 +138,16 @@
             margin: 2% !important;
         }
 
+        .margin {
+            margin-bottom: 5px !important;
+        }
+
     </style>
-    <script>
+  <!--  <script>
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
         });
-    </script>
+    </script> -->
 </head>
 <body>
 <div class="container-xl">
@@ -155,7 +159,9 @@
                     <div class="col-sm-4">
                         <div class="search-box">
                             <i class="material-icons">&#xE8B6;</i>
-                            <input type="text" class="form-control" placeholder="Search&hellip;">
+                            <form method="post" action="/myBooks/booksFair">
+                            <input name="search" type="text" class="form-control" placeholder="Search&hellip;">
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -185,8 +191,11 @@
                         <form method="post" th:action="@{'/myBooks/{id}/reservation' (id=${book.id})}">
                             <button type="submit" th:if="${book.getUserBuyer()==null}" title="Резервирај" data-toggle="tooltip"  class="btn btn-sm btn-success"><i style="color:white;">Резервирај</i></button>
                         </form>
-                        <a th:if="${book.getUserBuyer()!=null}" title="Резервирана" data-toggle="tooltip"  class="btn btn-sm btn-success"><i style="color:white;">Веќе резервирана</i></a>
-
+                        <a th:if="${book.getUserBuyer()!=null}" title="Резервирана" data-toggle="tooltip"  class="btn btn-sm btn-success margin"><i style="color:white;">Веќе резервирана</i></a>
+                        <form method="post" th:action="@{'/myBooks/{id}/delete' (id=${book.id})}">
+                            <button sec:authorize="hasRole('ROLE_ADMIN')" type="submit" title="Избриши" data-toggle="tooltip"  class="btn btn-sm btn-danger"><i style="color:white;">Избриши</i></button>
+                        </form>
+                        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{'/myBooks/{id}/edit' (id=${book.id})}" class="btn btn-sm btn-warning"><i style="color:white;">Промени</i></a>
                         <!--  <a href="#" class="view" title="Види повеќе" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
                              <a th:href="@{'/myBooks/{id}/edit' (id=${book.id})}" class="btn btn-sm btn-success edit-product"><i class="fas fa-clock">Резервирај</i></a> -->
                     </td>

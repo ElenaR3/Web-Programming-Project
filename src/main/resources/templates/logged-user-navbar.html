@@ -32,6 +32,25 @@
     margin-right: 0;
     }
 
+    .avatar {
+        height: 40px;
+    }
+
+    .right-corner {
+        margin-left: 700px;
+    }
+
+    .right {
+        margin-left: 600px !important;
+    }
+
+    .bg-custom-1 {
+        background-color: #85144b;
+    }
+
+    .bg-custom-2 {
+        background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
+    }
 </style>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #d0ead0;">
     <a class="navbar-brand" href="#">
@@ -46,8 +65,27 @@
             <a class="nav-item nav-link" href="/myBooks/sellBooks">Продај книга</a>
             <a class="nav-item nav-link" href="/myBooks/myBooksForSale">Мои книги</a>
             <a class="nav-item nav-link" href="/myBooks/personalReserved">Резервирани за купување</a>
-            <a class="nav-item nav-link" href="#">Помош и безбедност</a>
-            <a class="nav-item nav-link" href="/logout">Одјави се</a>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item nav-link" href="/myBooks/personalReserved">Види разменети</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-list-4">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <div class="dropdown-menu right" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="/myBooks/myProfile">Мој профил</a>
+                            <a class="dropdown-item" href="#">Помош и безбедност</a>
+                            <a class="dropdown-item" href="/logout">Одјави се</a>
+                        </div>
+                        <a class="nav-link dropdown-toggle right-corner" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="../static/images/female_avatar.png" th:src="@{/images/female_avatar.png}" class="rounded-circle avatar">
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </div>
 </nav>

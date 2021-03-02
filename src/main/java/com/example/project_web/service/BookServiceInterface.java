@@ -11,8 +11,6 @@ import java.util.Optional;
 
 @Service
 public interface BookServiceInterface {
-
-    List<Book> searchByNameOrAuthor(String name, String author);
     List<Book> listAll();
     Book delete(Long id);
     Book update(Long id, String bookName, int yearPublished, FacultyChoice facultyChoice, List<Author> authors, User user, String description);

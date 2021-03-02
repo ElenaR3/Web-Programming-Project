@@ -1,6 +1,8 @@
 package com.example.project_web.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,6 +26,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.customAuthenticationProvider = customAuthenticationProvider;
     }
 
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        return hierarchy;
+    }
+
     /*
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -37,10 +45,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/","/login","/books/sign-up","/books/homepage",
-                        "/assets/**","/api/**","/images/**","/resources/**","/static/**",
+                        "/assets/**","/api/**", "/login/oauth2/code/google","/images/**","/resources/**","/static/**",
                         "/css/**", "/js/**").permitAll()
-                .antMatchers("/myBooks/**").hasRole("USER")
-                .anyRequest().hasRole("ADMIN")
+                .antMatchers("/myBooks/**", "/books/**").hasAnyRole("USER", "ADMIN")
+            //    .anyRequest().hasRole("ADMIN")
+                //    .antMatchers("/").hasRole("ADMIN")
+                // .anyRequest().hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/books/login").permitAll()
@@ -54,7 +64,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID")
                 .logoutSuccessUrl("/books/login")
                 .and()
-                .exceptionHandling().accessDeniedPage("/shop/accessDenied");    }
+                .exceptionHandling().accessDeniedPage("/shop/accessDenied")
+                .and().oauth2Login() // enable OAuth2
+                .loginPage("/login").defaultSuccessUrl("/myBooks/sellBooksAuth");
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

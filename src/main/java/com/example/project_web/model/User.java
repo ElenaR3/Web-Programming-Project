@@ -22,6 +22,8 @@ public class User implements UserDetails {
     @Id
     private String username;
     private String password;
+    private String phone;
+    private String profession;
 
     public User(String name, String surname, String username, String password, Role role) {
         this.name = name;
@@ -135,5 +137,21 @@ public class User implements UserDetails {
 
     public void setUserCooperator(List<User> userCooperator) {
         this.userCooperator = userCooperator;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
     }
 }
