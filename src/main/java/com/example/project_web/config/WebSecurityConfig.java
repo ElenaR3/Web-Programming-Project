@@ -48,9 +48,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/assets/**","/api/**", "/login/oauth2/code/google","/images/**","/resources/**","/static/**",
                         "/css/**", "/js/**").permitAll()
                 .antMatchers("/myBooks/**", "/books/**").hasAnyRole("USER", "ADMIN")
-            //    .anyRequest().hasRole("ADMIN")
-                //    .antMatchers("/").hasRole("ADMIN")
-                // .anyRequest().hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/books/login").permitAll()

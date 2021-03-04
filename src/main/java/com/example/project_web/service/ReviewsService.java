@@ -16,7 +16,7 @@ public class ReviewsService implements ReviewsServiceInterface{
     }
 
     @Override
-    public List<Review> findByUserReviewed(User user) {
+    public List<Review> findAllByUserReviewed(User user) {
         return this.reviewRepository.findAllByReviewed(user);
     }
 }

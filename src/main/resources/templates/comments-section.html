@@ -1,0 +1,67 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<style>
+    body{margin-top:20px;}
+
+    .comment-wrapper .panel-body {
+        max-height:650px;
+        overflow:auto;
+    }
+
+    .comment-wrapper .media-list .media img {
+        width:64px;
+        height:64px;
+        border:2px solid #e5e7e8;
+    }
+
+    .comment-wrapper .media-list .media {
+        border-bottom:1px dashed #efefef;
+        margin-bottom:25px;
+    }
+
+    .custom-class {
+        width: 100%;
+    }
+    .media-body {
+        margin-left: 3%;
+    }
+    body {
+        margin-top: 0 !important;
+    }
+</style>
+<div class="container">
+    <div class="row bootstrap snippets bootdeys">
+        <div class="custom-class">
+            <div class="comment-wrapper">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        Панел за коментари
+                    </div>
+                    <div class="panel-body">
+                        <textarea class="form-control" placeholder="write a comment..." rows="3"></textarea>
+                        <br>
+                        <button type="button" class="btn btn-info pull-right">Објави</button>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <ul class="media-list">
+                            <li class="media" th:each="review : ${reviews}">
+                                <a href="#" class="pull-left">
+                                    <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
+                                </a>
+                                <div class="media-body">
+                                <span class="text-muted pull-right">
+                                    <small class="text-muted" th:text="${review.getDateTime()}"></small>
+                                </span>
+                                    <strong class="text-success" th:text="${review.getReviewer().getUsername()}"></strong>
+                                    <p th:text="${review.getReview()}">
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

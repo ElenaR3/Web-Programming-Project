@@ -6,6 +6,7 @@ import com.example.project_web.model.enumerations.FacultyChoice;
 import com.example.project_web.model.exceptions.InvalidBookIdException;
 import com.example.project_web.repository.AuthorRepository;
 import com.example.project_web.repository.BookRepository;
+import com.example.project_web.repository.EventRepository;
 import com.example.project_web.repository.ReviewRepository;
 import com.example.project_web.service.BookService;
 import com.example.project_web.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -23,7 +25,9 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.model.IModel;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,13 +46,15 @@ public class UserPersonalBooksController {
     private final AuthorRepository authorRepository;
     private final UserService userService;
     private final ReviewRepository reviewRepository;
+    private final EventRepository eventRepository;
 
-    public UserPersonalBooksController(BookService bookService, BookRepository bookRepository, AuthorRepository authorRepository, UserService userService, ReviewRepository reviewRepository) {
+    public UserPersonalBooksController(BookService bookService, BookRepository bookRepository, AuthorRepository authorRepository, UserService userService, ReviewRepository reviewRepository, EventRepository eventRepository) {
         this.bookService = bookService;
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.userService = userService;
         this.reviewRepository = reviewRepository;
+        this.eventRepository = eventRepository;
     }
 
 
@@ -56,6 +62,15 @@ public class UserPersonalBooksController {
     public String getHomepage(Model model){
         model.addAttribute("bodyContentUser", "buy_books");
         return "master-user-template";
+    }
+
+    @GetMapping("/events")
+    public String events(Model model) {
+        List<CalendarEvent> events = (List<CalendarEvent>) this.eventRepository.findAll();
+        model.addAttribute("events", events);
+        model.addAttribute("bodyContentUser", "calendar");
+        return "master-user-template";
+
     }
 
     @GetMapping("/myProfile")
@@ -77,8 +92,21 @@ public class UserPersonalBooksController {
         return "master-user-template";
     }
 
+    @GetMapping("/userProfile/{user}")
+    public String getOtherProfile(@PathVariable String user, Model model) {
+        User userProfile = null;
+        Optional<User> findUserProfile = this.userService.findByUsername(user);
+        if(findUserProfile.isPresent()) {
+          userProfile = findUserProfile.get();
+        }
+
+        model.addAttribute("user", userProfile);
+        model.addAttribute("bodyContentUser", "my-profile");
+        return "master-user-template";
+    }
+
     @PostMapping("/reviews")
-    public String getReviews(@RequestParam(required = false) String file, @RequestParam String username, Model model, Authentication authentication ){
+    public String getReviews(@RequestParam(required = false) String file, @RequestParam String username, Model model, Authentication authentication, HttpSession httpSession){
         String reviewer = null;
 
         Object principal = authentication.getPrincipal();
@@ -97,8 +125,40 @@ public class UserPersonalBooksController {
         List<Review> reviews = this.reviewRepository.findAllByReviewed(userReviewed);
 
         model.addAttribute("reviews", reviews);
-        model.addAttribute("bodyContentUser", "reviews-form");
+        model.addAttribute("userReviewed", userReviewed);
+        httpSession.setAttribute("userReviewed", userReviewed);
+        model.addAttribute("bodyContentUser", "reviews-form.html");
         return "master-user-template";
+    }
+
+    @PostMapping("/reviews/addComment")
+    public String addComment(@RequestParam String comment, Model model, Authentication authentication, HttpSession httpSession ){
+        String reviewer = null;
+
+        Object principal = authentication.getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            reviewer = ((UserDetails)principal).getUsername();
+        } else {
+            DefaultOidcUser usr = (DefaultOidcUser) authentication.getPrincipal();
+            reviewer = usr.getEmail();
+        }
+
+        User userReviewer = (User) this.userService.loadUserByUsername(reviewer);    // user-ot sto ocenuva e ova
+
+        User userReviewed = (User) httpSession.getAttribute("userReviewed");
+
+        Review review = new Review(comment, userReviewer, userReviewed);
+
+        this.reviewRepository.save(review);
+
+        List<Review> reviews = this.reviewRepository.findAll();
+
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("userReviewed", userReviewed);
+        model.addAttribute("bodyContentUser", "reviews-form.html");
+      //  return "master-user-template";
+        return "redirect:/myBooks/sellBooks";
     }
 
     @GetMapping("/sellBooksAuth")

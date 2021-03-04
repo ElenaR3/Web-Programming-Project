@@ -182,9 +182,12 @@
                     th:style="${iStat.odd}? 'font-weight: bold;'"
                     th:alt-title="${iStat.even}? 'even' : 'odd'">
                     <td th:text="${book.bookName}" ></td>
-                    <td th:text="${book.getYearPublished()}" ></td>
+                    <td th:text="${book.getYearPublished()}"></td>
                     <td th:text="${book.getWhichFaculty()}"></td>
-                    <td th:text="${book.getUser().getUsername()}"></td>
+                    <td>
+                            <a th:href="@{'/myBooks/userProfile/{user}' (user=${book.getUser().getUsername()})}" th:text="${book.getUser().getUsername()}"> </a>
+
+                    </td>
 
                     <td class="text-right">
                         <a  th:href="@{'/myBooks/{id}/reservation' (id=${book.id})}" title="Повеќе" data-toggle="tooltip"  class="btn btn-sm btn-info"><i style="color:white;">Повеќе</i></a>
